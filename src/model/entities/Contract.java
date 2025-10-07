@@ -10,8 +10,12 @@ public class Contract {
 	private LocalDate date;
 	private Double totalValue;
 
-	List<Installment> installments = new ArrayList<>();
+	List<Installment> installments = new ArrayList<>(); //installments = prestações
 
+	/*
+	 * Um contrato quando voce inicia, no momento ainda nao tem parcelas(installment). Motivo que 
+	 * ele nao está no construtor
+	*/
 	public Contract(Integer number, LocalDate date, Double totalValue) {
 		this.number = number;
 		this.date = date;

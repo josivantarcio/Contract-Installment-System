@@ -1,11 +1,15 @@
 package model.entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+//Installment significa parcelas
 public class Installment {
 
 	private LocalDate dueDate;
 	private Double amount;
+	
+	private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public Installment(LocalDate dueDate, Double amount) {
 		this.dueDate = dueDate;
@@ -28,4 +32,11 @@ public class Installment {
 		this.amount = amount;
 	}
 
+	@Override
+	public String toString() {
+		return dtf.format(getDueDate()) + " - " + String.format("%.2f", getAmount());
+	}
+
+	
+	
 }

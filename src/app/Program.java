@@ -8,6 +8,7 @@ import java.util.Scanner;
 import model.entities.Contract;
 import model.entities.Installment;
 import model.services.ContractService;
+import model.services.PaypalService;
 
 public class Program {
 
@@ -31,13 +32,13 @@ public class Program {
 			System.out.print("Entre com o numero de parcelas: ");
 			int parcelas = sc.nextInt();
 
-			Contract contract = new Contract(numero, data, valorContrato);
+			Contract obj = new Contract(numero, data, valorContrato);
 
-			ContractService contraService = new ContractService();
-			contraService.processContract(contract, parcelas);
+			ContractService contraService = new ContractService(new PaypalService());
+			contraService.processContract(obj, parcelas);
 
-			for (Installment inst : contract.getInstallments()) {
-				System.out.println(dtf.format(inst.getDueDate()) + " - " + String.format("%.2f", inst.getAmount()));
+			for (Installment inst : obj.getInstallments()) {
+				System.out.println(inst);
 			}
 
 		} catch (Exception e) {
