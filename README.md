@@ -1,23 +1,33 @@
-🧾 Java - Interfaces Project (Contract Installment System)
+# Contract Installment System (Java)
 
-This project was developed as a practical exercise from the “Interfaces” chapter of the Java Complete Course – Object-Oriented Programming by Prof. Nélio Alves (DevSuperior).
+This project implements a **contract installment system** as a practice exercise from the *“Interfaces”* chapter of the **Java Complete / Object-Oriented Programming** course by Nélio Alves (DevSuperior).
 
-The goal is to automate the processing of contracts and the generation of installments using interfaces, dependency injection, and low coupling between classes.
+It demonstrates:
+- Use of **interfaces** and **polymorphism**
+- **Dependency injection** (decoupling between service and logic)
+- Calculation of contract installments with **interest** and **payment fee**
+- Date manipulations via `java.time`
 
-🚀 Project Description
+---
 
-A company wants to automate the processing of its contracts.
-The system must generate monthly installments for a given contract based on the number of months specified.
+## 📦 Project Description
 
-The online payment service used is PayPal, which applies:
+The system reads a contract with:
+- Number
+- Date
+- Total value
 
-1% simple interest per month
+Then it reads the number of months for installments and computes each installment applying:
 
-2% payment fee on the updated installment amount
+1. **1% simple interest per month**  
+2. **2% payment fee** on the amount updated with interest  
 
-📘 Example
+It then prints out each installment’s due date and amount.
 
-Input:
+### Example
+
+**Input:**
+
 
 Number: 8028
 Date (dd/MM/yyyy): 25/06/2018
@@ -25,97 +35,83 @@ Contract value: 600.00
 Number of installments: 3
 
 
-Expected output:
+**Expected Output:**
+
 
 Installments:
 25/07/2018 - 206.04
 25/08/2018 - 208.08
 25/09/2018 - 210.12
 
-Calculation:
-Installment	Formula	Final Value
-#1	200 + 1% * 1 = 202 → 202 + 2% = 206.04	✅
-#2	200 + 1% * 2 = 204 → 204 + 2% = 208.08	✅
-#3	200 + 1% * 3 = 206 → 206 + 2% = 210.12	✅
-🧩 Project Structure
+
+---
+
+## 🗂️ Project Structure
+
+
+
 src/
- ├── app/
- │   └── Program.java
- │
- ├── model/
- │   ├── entities/
- │   │   ├── Contract.java
- │   │   └── Installment.java
- │   │
- │   └── services/
- │       ├── OnlinePaymentService.java
- │       ├── PaypalService.java
- │       └── ContractService.java
- │
- └── README.md
-
-⚙️ Key Concepts
-
-Interfaces – define contracts for services (e.g., OnlinePaymentService)
-
-Dependency Injection – ContractService depends on an abstraction, not a concrete class
-
-Low Coupling – allows easily swapping the payment service implementation
-
-Object-Oriented Programming (OOP) – encapsulation, composition, and polymorphism
-
-java.time API – for date manipulation (LocalDate, plusMonths())
-
-🧠 Core Logic (ContractService)
-double basicQuota = totalValue / months;
-for (int i = 1; i <= months; i++) {
-    double updatedQuota = onlineService.interest(basicQuota, i);
-    double fullQuota = updatedQuota + onlineService.paymentFee(updatedQuota);
-    LocalDate dueDate = contract.getDate().plusMonths(i);
-    contract.getInstallments().add(new Installment(dueDate, fullQuota));
-}
-
-🧪 How to Run
-
-Clone the repository:
-
-git clone https://github.com/yourusername/interfaces-contract-java.git
-cd interfaces-contract-java
+├── app/
+│ └── Program.java
+│
+├── model/
+│ ├── entities/
+│ │ ├── Contract.java
+│ │ └── Installment.java
+│ │
+│ └── services/
+│ ├── OnlinePaymentService.java
+│ ├── PaypalService.java
+│ └── ContractService.java
+└── README.md
 
 
-Compile the project:
+- `entities/` — classes de domínio: `Contract`, `Installment`  
+- `services/` — lógica de cálculo e interface de pagamento  
+- `app/Program.java` — classe que roda o programa e faz I/O  
+
+---
+
+## 🔍 Key Concepts & Logic
+
+- **Interface** `OnlinePaymentService` define os métodos `interest(...)` e `paymentFee(...)`  
+- `PaypalService` implementa essa interface  
+- `ContractService` injeta (usa) um `OnlinePaymentService` para aplicar as regras  
+- Em `ContractService.processContract(...)`:
+  ```java
+  double basicQuota = contract.getTotalValue() / months;
+  for (int i = 1; i <= months; i++) {
+      double updated = onlineService.interest(basicQuota, i);
+      double full = updated + onlineService.paymentFee(updated);
+      LocalDate dueDate = contract.getDate().plusMonths(i);
+      contract.getInstallments().add(new Installment(dueDate, full));
+  }
+
+🛠 How to Run
+
+Clone the repo:
+
+git clone https://github.com/josivantarcio/Contract-Installment-System.git
+cd Contract-Installment-System
+
+
+Compile:
 
 javac -d bin src/**/*.java
 
 
-Run the program:
+Execute:
 
 java -cp bin app.Program
 
 
-Enter the contract data as shown in the example above.
+When prompted, enter data (number, date, total, months). The program will print each installment.
 
-📚 Technologies Used
+👤 Author
 
-Java 17+
+Developed by Josevan Oliveira
+🔗 GitHub Profile
 
-Object-Oriented Programming (OOP)
+📄 License
 
-java.time API
-
-Interfaces and Polymorphism
-
-Console Application (CLI)
-
-👨‍💻 Author
-
-Developed by [Your Name]
-💼 Full Stack Developer | Data Scientist
-📧 [your-email@example.com
-]
-🔗 LinkedIn
- | GitHub
-
-🏁 License
-
-This project is for educational purposes and follows the standards of the Java Complete Course – Nélio Alves / DevSuperior.
+This project uses the MIT License — see the LICENSE file for details.
